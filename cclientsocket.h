@@ -85,7 +85,7 @@ public:
         memcpy(&sCmd,cursor,sizeof(WORD));
         cursor+=sizeof(WORD);
         int payload_size = nLength - (sizeof(WORD) + sizeof(DWORD) + sizeof(WORD) + sizeof(WORD));
-        if (payload_size < 0) { nSize = 0; return; }
+        if (payload_size < 0) { nSize = 0; return; }//验证数据包是否完整
         strData.resize(payload_size+1);
         memcpy(strData.data(), cursor, payload_size);
         strData[payload_size]='\0';
@@ -185,46 +185,50 @@ public:
         }
    }*/
 
-    bool DealCommand() {
+    int DealCommand() {
         if (m_sock == -1) return false;
-        char* buffer = new char[4096];
+
+        // 【关键修正 1】使用 std::vector (RAII 自动清理)
+        std::vector<char> buffer(4096);
         size_t index = 0; // 缓冲区中有效数据的总长度
-        while (TRUE) { // 外部循环：持续接收数据
-            // 1. 接收数据：阻塞等待新数据，写入到缓冲区的末尾
-            size_t bytes_to_read = 4096 - index;
+        while (TRUE) {
+            size_t bytes_to_read = buffer.size() - index; // 使用 vector.size() 获取容量
             if (bytes_to_read == 0) {
-                qDebug() << "缓冲区已满，无法接收更多数据。";
-                break; // 缓冲满，强制退出，防止越界
-            }
-            size_t len = ::recv(m_sock, buffer + index, bytes_to_read, 0);
-            if (len <= 0) {
-                // 连接断开或错误，退出函数
-                delete[] buffer;
+                qDebug() << "缓冲区已满，强制退出。";
                 return false;
             }
-            index += len; // 更新缓冲区中总数据长度
+            // 1. 接收数据：使用有符号 int 接收返回值，并使用 data() 获取指针
+            int signed_len = ::recv(m_sock, buffer.data() + index, bytes_to_read, 0);
+            if (signed_len <= 0) {
+                // 连接断开 (0) 或错误 (-1)，vector 在函数退出时自动清理
+                qDebug() << "Connection closed or recv failed. Error:" << WSAGetLastError();
+                return false;
+            }
+            // 转换为 size_t 并更新总长度
+            size_t len = (size_t)signed_len;
+            index += len;
             // --- 内部循环：解析累积的数据 ---
             size_t consumed_size = 0;
             while (index >= 10) {
-                size_t total_data_size = index; // 传递当前总长度
-                m_packet = SPackeg((BYTE*)buffer, total_data_size);
-                consumed_size = total_data_size; // 获取解析器设置的消耗长度
+                size_t total_data_size = index;
+                // 2. 尝试解析 (注意：m_packet 应该通过构造函数赋值)
+                m_packet = SPackeg((BYTE*)buffer.data(), total_data_size); // 修正：使用 data()
+                consumed_size = total_data_size;
                 if (consumed_size > 0) {
-                    qDebug() << "成功解包，命令 ID:" << m_packet.sCmd;
-                    // 清理缓冲区：移除已消耗的部分，将剩余数据前移
-                    memmove(buffer, buffer + consumed_size, index - consumed_size);
-                    index -= consumed_size; // 更新总长度
-                    // 立处理这个包，并退出 DealCommand
-                    delete[] buffer;
+                    // ... (成功解包逻辑)
+                    // 3. 清理缓冲区 (memmove 使用 data() 指针)
+                    // 必须在 vector 的有效数据指针上操作
+                    memmove(buffer.data(), buffer.data() + consumed_size, index - consumed_size);
+                    index -= consumed_size;
+                    // 退出 DealCommand。vector 会自动析构。
                     return m_packet.sCmd;
                 } else {
-                    // 包不完整，或者格式错误，退出解析循环，等待更多数据
-                    break;
+                    break; // 包不完整，等待更多数据
                 }
             }
         }
-        delete[] buffer;
-        return false; // 如果循环意外结束
+        // 退出函数时，std::vector<char> buffer 会自动调用析构函数，释放内存。
+        return false;
     }
 
 private:
@@ -264,17 +268,26 @@ private:
 
 
 public slots:
-    void startConnectionSlot(QString nIP,QString nPort,int cmd) {
+    void startConnectionSlot(QString nIp,
+                             QString nPort,
+                             WORD cmd,
+                             const QByteArray& payload=QByteArray()) {
         qDebug()<<"startConnectionSlot";
-        int ret=StartSocket(nIP,nPort);
+        int ret=StartSocket(nIp,nPort);
         if(ret==-1)
         {
             qDebug()<<"StartSocket false!";
             return ;
         }
-        this->SnedCmd(cmd);
-    }
+        // QByteArray byteArray=fullPath.toUtf8();
+         const BYTE* pData = (const BYTE*)payload.constData();
+         size_t nSize = payload.size();
 
+        SPackeg pack{cmd,pData,nSize};
+        this->Send(pack);
+        //this->CloseSocket();
+    };
+    void GetDirInfo();
 signals:
     void lockCommandReceived();
 };

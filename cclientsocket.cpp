@@ -35,10 +35,6 @@ bool Cclientsocket::CloseSocket()
     return true;
 }
 
-
-
-
-
 bool Cclientsocket::GetFilePath(std::string& strPath){
     if(m_packet.sCmd>=2&&m_packet.sCmd<=4)
     {
@@ -48,17 +44,34 @@ bool Cclientsocket::GetFilePath(std::string& strPath){
     return false;
 }
 
+void Cclientsocket::GetDirInfo()
+{
+
+
+
+
+    return ;
+}
+
+
+
+
+
+
+
+
+
+
+
 bool Cclientsocket::Send(const SPackeg& pack) {
     qDebug()<<"sending!";
-
-    // 假设 SPackeg 类有一个 getPacketBuffer() 方法，返回 const std::vector<char>&
     const std::vector<char>& buffer = pack.getPacketBuffer();
 
     // 1. 获取完整数据的指针
     const char* pData = buffer.data();
 
     // 2. 获取准确的长度
-    size_t totalSize = buffer.size(); // 或者使用 pack.nLength，但 buffer.size() 更可靠
+    size_t totalSize = buffer.size();
 
     // 3. 调用 send，并检查是否所有字节都发送成功
     int bytes_sent = ::send(m_sock, pData, totalSize, 0);
@@ -68,13 +81,10 @@ bool Cclientsocket::Send(const SPackeg& pack) {
         qDebug() << "Send failed:" << WSAGetLastError();
         return false;
     }
-    qDebug()<<"sended!";
+    //qDebug()<<"sended!";
     // 检查是否所有字节都发送出去了 (TCP send 不保证一次发完)
     return (size_t)bytes_sent == totalSize;
 }
-
-
-
 
 bool Cclientsocket::SnedCmd(int Cmd)
 {

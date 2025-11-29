@@ -506,6 +506,26 @@ debug\moc_mainwindow.cpp: ..\..\mainwindow.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qlocale.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreeview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qframe.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qvalidator.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qregularexpression.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyle.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabbar.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qrubberband.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidgetitemiterator.h \
+		..\..\cclientsocket.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\QDebug \
 		debug\moc_predefs.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\bin\moc.exe
 	E:\qt\qt6\6.8.1\msvc2022_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include E:/qt/QtItems/RemoteCtrlClient/build/unknown-Debug/debug/moc_predefs.h -IE:/qt/qt6/6.8.1/msvc2022_64/mkspecs/win32-msvc -IE:/qt/QtItems/RemoteCtrlClient -IE:/qt/qt6/6.8.1/msvc2022_64/include -IE:/qt/qt6/6.8.1/msvc2022_64/include/QtWidgets -IE:/qt/qt6/6.8.1/msvc2022_64/include/QtGui -IE:/qt/qt6/6.8.1/msvc2022_64/include/QtCore -I. -I"D:\Visual Stdio\VC\Tools\MSVC\14.42.34433\include" -I"D:\Visual Stdio\VC\Tools\MSVC\14.42.34433\ATLMFC\include" -I"D:\Visual Stdio\VC\Auxiliary\VS\include" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um" ..\..\mainwindow.h -o debug\moc_mainwindow.cpp
@@ -840,6 +860,26 @@ debug\main.obj: ..\..\main.cpp ..\..\mainwindow.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qlocale.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabwidget.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreeview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qframe.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qvalidator.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qregularexpression.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyle.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabbar.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qrubberband.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidgetitemiterator.h \
+		..\..\cclientsocket.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\QDebug \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\QApplication \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qapplication.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\QLocale \
@@ -1038,9 +1078,27 @@ debug\mainwindow.obj: ..\..\mainwindow.cpp ..\..\mainwindow.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qlocale.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qguiapplication_platform.h \
 		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabwidget.h \
-		ui_mainwindow.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidget.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreeview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemview.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractscrollarea.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qframe.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qabstractitemmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qitemselectionmodel.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractitemdelegate.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyleoption.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractspinbox.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtGui\qvalidator.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\qregularexpression.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qabstractslider.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qstyle.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtabbar.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qrubberband.h \
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtWidgets\qtreewidgetitemiterator.h \
 		..\..\cclientsocket.h \
-		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\QDebug
+		..\..\..\..\qt6\6.8.1\msvc2022_64\include\QtCore\QDebug \
+		ui_mainwindow.h
 
 debug\qrc_qmake_qmake_qm_files.obj: debug\qrc_qmake_qmake_qm_files.cpp 
 
