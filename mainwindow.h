@@ -16,11 +16,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+
 signals:
-    void testLink();
+    void SendCmd(QString nIP,QString nPort,int cmd);
 private slots:
-    void on_testSockButton_clicked();//测试链接
+    //void on_testSockButton_clicked();//测试链接
 private:
     Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H

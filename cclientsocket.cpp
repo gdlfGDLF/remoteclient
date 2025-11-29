@@ -1,5 +1,5 @@
 #include "cclientsocket.h"
-bool Cclientsocket::SetupSocket(int port,const std::string& strIPAddress) {
+bool Cclientsocket::SetupSocket(QString Ip,QString Port) {
     // 1. 创建 Socket
     m_sock = socket(AF_INET, SOCK_STREAM, 0); // PF_INET 等同于 AF_INET，通常用 AF_INET
 
@@ -11,8 +11,8 @@ bool Cclientsocket::SetupSocket(int port,const std::string& strIPAddress) {
     sockaddr_in serv_adr;
     memset(&serv_adr, 0, sizeof(serv_adr));
     serv_adr.sin_family = AF_INET;
-    serv_adr.sin_addr.s_addr = inet_addr(strIPAddress.c_str()); // 监听所有网卡
-    serv_adr.sin_port = htons(port);
+    serv_adr.sin_addr.s_addr = inet_addr(Ip.toStdString().c_str()); // 监听所有网卡
+    serv_adr.sin_port = htons(Port.toInt());
 
     int ret=::connect(m_sock,(sockaddr*)&serv_adr,sizeof(serv_adr));//符号冲突 ：：选择c函数
 
@@ -25,9 +25,19 @@ bool Cclientsocket::SetupSocket(int port,const std::string& strIPAddress) {
     qDebug() << "Server start on port "<<m_sock;
     return true;
 }
-bool Cclientsocket::StartSocket(const std::string& ip) {
-    return SetupSocket(9527,ip);
+bool Cclientsocket::StartSocket(QString Ip,QString Port) {
+    return SetupSocket(Ip,Port);
 }
+
+bool Cclientsocket::CloseSocket()
+{
+    ::closesocket(m_sock);
+    return true;
+}
+
+
+
+
 
 bool Cclientsocket::GetFilePath(std::string& strPath){
     if(m_packet.sCmd>=2&&m_packet.sCmd<=4)
@@ -61,4 +71,14 @@ bool Cclientsocket::Send(const SPackeg& pack) {
     qDebug()<<"sended!";
     // 检查是否所有字节都发送出去了 (TCP send 不保证一次发完)
     return (size_t)bytes_sent == totalSize;
+}
+
+
+
+
+bool Cclientsocket::SnedCmd(int Cmd)
+{
+    SPackeg pack(Cmd,NULL,0);
+    this->Send(pack);
+    return true;
 }

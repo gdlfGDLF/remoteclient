@@ -77,20 +77,22 @@ public:
                 break;
             }
         }
-        //cursor=pData+i;//游标走到包头结束处
+        //这里有个问题 我需要手动加一个字符串终止符。
         //读取包中长度信息
         memcpy(&nLength,cursor,sizeof(DWORD));
         cursor+=sizeof(DWORD);
         if (i + nLength > nSize) return;
         memcpy(&sCmd,cursor,sizeof(WORD));
         cursor+=sizeof(WORD);
-        int payload_size = nLength - (sizeof(WORD) + sizeof(DWORD) + sizeof(WORD) + sizeof(WORD)); // 总长度 - 10B 固定头部
-        if (payload_size < 0) return; // 载荷长度非法
-        strData.resize(payload_size);
-        memcpy(&strData,cursor,payload_size);
-        cursor+=sizeof(strData);
+        int payload_size = nLength - (sizeof(WORD) + sizeof(DWORD) + sizeof(WORD) + sizeof(WORD));
+        if (payload_size < 0) { nSize = 0; return; }
+        strData.resize(payload_size+1);
+        memcpy(strData.data(), cursor, payload_size);
+        strData[payload_size]='\0';
+        cursor+=payload_size;
         memcpy(&sSum, cursor, sizeof(WORD));
         cursor += sizeof(WORD);
+
         WORD calculated_sum = 0;
         // 5. 计算校验和：
         for (size_t j = 0; j < strData.size(); j++) {
@@ -143,28 +145,37 @@ public:
         static Cclientsocket instance;
         return instance;
     }
-    bool StartSocket(const std::string& ip);
+    bool StartSocket(QString Ip,QString Port);
     bool Send(const char* pData,int nSIze){return 1;};
     bool Send(const SPackeg& pack);
+    bool SnedCmd(int Cmd);
     bool GetFilePath(std::string& strPath);
     bool GetMouseEvent(MouseEvent& mouse);
+    bool CloseSocket();
+    SPackeg GetPack(){
+        return m_packet;
+    }
     SOCKET AcceptClient();
-    bool DealCommand(){
+  /*  bool DealCommand(){
         if(m_sock==-1)return false;
+        qDebug()<<"dealcommand";
         char* buffer=new char[4096];
         memset(buffer,0,4096);
         size_t index=0;
         while (TRUE) {
             //收到包
             size_t len =recv(m_sock,buffer+index,4096-index,0);
+
             if(len<=0)
             {
+                qDebug()<<"DealCommand len<0 return -1";
                 return -1;
             }
             //创建包对象
             index +=len;
             len=index;
             m_packet=SPackeg((BYTE*)buffer,len);
+            qDebug()<<m_packet.strData;
             if(len>0)
             {
                 memmove(buffer,buffer+len,4096-len);
@@ -172,12 +183,56 @@ public:
                 return m_packet.sCmd;
             }
         }
+   }*/
+
+    bool DealCommand() {
+        if (m_sock == -1) return false;
+        char* buffer = new char[4096];
+        size_t index = 0; // 缓冲区中有效数据的总长度
+        while (TRUE) { // 外部循环：持续接收数据
+            // 1. 接收数据：阻塞等待新数据，写入到缓冲区的末尾
+            size_t bytes_to_read = 4096 - index;
+            if (bytes_to_read == 0) {
+                qDebug() << "缓冲区已满，无法接收更多数据。";
+                break; // 缓冲满，强制退出，防止越界
+            }
+            size_t len = ::recv(m_sock, buffer + index, bytes_to_read, 0);
+            if (len <= 0) {
+                // 连接断开或错误，退出函数
+                delete[] buffer;
+                return false;
+            }
+            index += len; // 更新缓冲区中总数据长度
+            // --- 内部循环：解析累积的数据 ---
+            size_t consumed_size = 0;
+            while (index >= 10) {
+                size_t total_data_size = index; // 传递当前总长度
+                m_packet = SPackeg((BYTE*)buffer, total_data_size);
+                consumed_size = total_data_size; // 获取解析器设置的消耗长度
+                if (consumed_size > 0) {
+                    qDebug() << "成功解包，命令 ID:" << m_packet.sCmd;
+                    // 清理缓冲区：移除已消耗的部分，将剩余数据前移
+                    memmove(buffer, buffer + consumed_size, index - consumed_size);
+                    index -= consumed_size; // 更新总长度
+                    // 立处理这个包，并退出 DealCommand
+                    delete[] buffer;
+                    return m_packet.sCmd;
+                } else {
+                    // 包不完整，或者格式错误，退出解析循环，等待更多数据
+                    break;
+                }
+            }
+        }
+        delete[] buffer;
+        return false; // 如果循环意外结束
     }
+
 private:
     //SOCKET m_client = INVALID_SOCKET;
     SOCKET m_sock = INVALID_SOCKET;
     SPackeg m_packet;
-    bool SetupSocket(int port,const std::string& strIPAddress);
+    bool SetupSocket(QString Ip,QString Port);
+
     bool InitWSA(){
         WSADATA data{};
         int result =WSAStartup(MAKEWORD(1,1),&data);
@@ -206,23 +261,21 @@ private:
     Cclientsocket& operator=(const Cclientsocket&) = delete;
 
 
+
+
 public slots:
-    void startConnectionSlot() {
+    void startConnectionSlot(QString nIP,QString nPort,int cmd) {
         qDebug()<<"startConnectionSlot";
-        int ret=StartSocket("127.0.0.1"); // 假设IP地址是固定的
+        int ret=StartSocket(nIP,nPort);
         if(ret==-1)
         {
             qDebug()<<"StartSocket false!";
             return ;
         }
-        SPackeg pack(12138,NULL,0);
-        this->Send(pack);
+        this->SnedCmd(cmd);
     }
 
 signals:
     void lockCommandReceived();
 };
-
-
-
 #endif // CCLIENTSOCKET_H

@@ -40,7 +40,10 @@ static constexpr auto qt_meta_stringdata_ZN13CclientsocketE = QtMocHelpers::stri
     "Cclientsocket",
     "lockCommandReceived",
     "",
-    "startConnectionSlot"
+    "startConnectionSlot",
+    "nIP",
+    "nPort",
+    "cmd"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -63,13 +66,13 @@ Q_CONSTINIT static const uint qt_meta_data_ZN13CclientsocketE[] = {
        1,    0,   26,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       3,    0,   27,    2, 0x0a,    2 /* Public */,
+       3,    3,   27,    2, 0x0a,    2 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::Int,    4,    5,    6,
 
        0        // eod
 };
@@ -86,7 +89,10 @@ Q_CONSTINIT const QMetaObject Cclientsocket::staticMetaObject = { {
         // method 'lockCommandReceived'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'startConnectionSlot'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>
     >,
     nullptr
 } };
@@ -97,7 +103,7 @@ void Cclientsocket::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->lockCommandReceived(); break;
-        case 1: _t->startConnectionSlot(); break;
+        case 1: _t->startConnectionSlot((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[3]))); break;
         default: ;
         }
     }
